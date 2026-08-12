@@ -419,7 +419,6 @@ input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius
 #drive-hud .exit { font-size: 11px; color: var(--text-dim); border: 1px solid var(--glass-border); padding: 6px 12px; border-radius: 9px; }
 #drive-hud .exit:hover { color: var(--red); border-color: rgba(255,77,77,.4); }
 
-<<<<<<< HEAD
 /* ============ PROFESSIONAL DRIVE HUD (no-emoji, vector icons) ============ */
 #drive-hud-pro {
   position: absolute; left: 50%; transform: translateX(-50%);
@@ -509,8 +508,6 @@ input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius
 @keyframes dhSlideIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes dhFlash { 0%,100% { opacity: 1; } 50% { opacity: .55; } }
 
-=======
->>>>>>> 537061ed35c7d92f7bb486f3a7ec519bfed51bb6
 /* ============ MOBILE TOUCH CONTROLS ============ */
 #touch-controls { position: absolute; inset: 0; z-index: 22; pointer-events: none; display: none; }
 #touch-controls.active { display: block; }
@@ -564,7 +561,6 @@ input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius
   #credit { right: 8px; bottom: 68px; font-size: 8.5px; opacity: .6; }
   #drive-hud { bottom: 190px; padding: 8px 14px; }
   #drive-hud .speed { font-size: 21px; }
-<<<<<<< HEAD
   #drive-hud-pro {
     bottom: 200px; left: 8px; right: 8px; transform: none;
     flex-wrap: wrap; gap: 8px; padding: 9px 11px;
@@ -572,8 +568,6 @@ input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius
   #drive-hud-pro .dh-speed-val { font-size: 30px; }
   #drive-hud-pro .dh-chip { min-width: 118px; font-size: 10.5px; }
   #drive-warnings { top: 52px; width: 94vw; }
-=======
->>>>>>> 537061ed35c7d92f7bb486f3a7ec519bfed51bb6
   .lab-grid { grid-template-columns: 1fr; }
   .page-inner { padding: 18px 14px 120px; }
   #mobile-nav {
@@ -630,7 +624,6 @@ input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius
   pointer-events: none; transition: opacity .5s;
 }
 @media (max-width: 860px) { .desktop-hint { display: none; } }
-<<<<<<< HEAD
 
 /* ===== Driver Analytics panel (analytics page, brief §15) ===== */
 .an-drive-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
@@ -662,5 +655,3 @@ input[type="range"]::-moz-range-thumb { width: 14px; height: 14px; border-radius
 .an-drive-evt .code { font-family: var(--font-mono); font-weight: 600; font-size: 10.5px; white-space: nowrap; }
 .an-drive-evt .det { color: var(--text-dim); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .an-drive-evt .ts { font-family: var(--font-mono); font-size: 10px; color: var(--text-faint); flex-shrink: 0; }
-=======
->>>>>>> 537061ed35c7d92f7bb486f3a7ec519bfed51bb6

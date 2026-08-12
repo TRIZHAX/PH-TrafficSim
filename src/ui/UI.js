@@ -2,10 +2,7 @@ import { bus } from '../core/EventBus.js';
 import { WEATHER, ROAD_CONDITIONS, INCIDENT_TYPES, VEHICLE_TYPES, KMH, SCENARIOS, DEFAULT_MIX } from '../core/Config.js';
 import { Pages } from './Pages.js';
 import { MobileControls } from './MobileControls.js';
-<<<<<<< HEAD
 import { DriveHUD } from './DriveHUD.js';
-=======
->>>>>>> 537061ed35c7d92f7bb486f3a7ec519bfed51bb6
 
 /**
  * UI — builds the whole shell (nav rail, top bar, dashboards, drawer,
@@ -22,10 +19,7 @@ export class UI {
     this._buildShell();
     this.pages = new Pages(this);
     this.mobile = new MobileControls(this);
-<<<<<<< HEAD
     this.driveHud = new DriveHUD(this);
-=======
->>>>>>> 537061ed35c7d92f7bb486f3a7ec519bfed51bb6
     this._bindEvents();
     this._toastTimer = null;
   }
@@ -451,11 +445,7 @@ export class UI {
     this.app.renderer2d._followPlayer = true;
     cam.follow = this.engine.player;
     if (cam.zoom < 2) cam.zoom = 3.2;
-<<<<<<< HEAD
     this.driveHud.show();
-=======
-    this.$('#drive-hud').classList.add('active');
->>>>>>> 537061ed35c7d92f7bb486f3a7ec519bfed51bb6
     if (this.mobile.isTouch) this.$('#touch-controls').classList.add('active');
     this.app.renderer3d?.setCameraMode?.('third');
     this.toast(`Driving ${VEHICLE_TYPES[type].label} — ${this.mobile.isTouch ? 'use touch controls' : 'W/A/S/D to drive'}`);
@@ -464,7 +454,6 @@ export class UI {
   exitDrive() {
     if (!this.driveMode) return;
     this.driveMode = false;
-<<<<<<< HEAD
     const summary = this.engine.driving?.summary?.();
     this.engine.removePlayer();
     this.app.renderer2d._followPlayer = false;
@@ -473,14 +462,6 @@ export class UI {
     this.$('#touch-controls').classList.remove('active');
     this.app.renderer3d?.setCameraMode?.('overview');
     if (summary && summary.distance > 5) this.showDriveResults(summary);
-=======
-    this.engine.removePlayer();
-    this.app.renderer2d._followPlayer = false;
-    this.app.renderer2d.camera.follow = null;
-    this.$('#drive-hud').classList.remove('active');
-    this.$('#touch-controls').classList.remove('active');
-    this.app.renderer3d?.setCameraMode?.('overview');
->>>>>>> 537061ed35c7d92f7bb486f3a7ec519bfed51bb6
   }
 
   cycleCamera() {
@@ -552,7 +533,6 @@ export class UI {
     const t = this.engine.clock.simTime;
     this.$('#ss-time').textContent = `${String(Math.floor(t / 60)).padStart(2, '0')}:${String(Math.floor(t % 60)).padStart(2, '0')}`;
     this._updateConditions();
-<<<<<<< HEAD
     // professional drive HUD (speed, limit, lane/signal/road/weather, warnings)
     if (this.driveMode) this.driveHud.update();
   }
@@ -589,9 +569,5 @@ export class UI {
       <div class="result-stat" style="grid-column:1/-1"><div class="k">Collision Breakdown</div><div class="v" style="font-size:13px">vehicle ${s.collisionsVehicle} · object ${s.collisionsObject} · violations/km ${s.violationsPerKm}</div></div>`;
     this.$('#results-modal .results-card h3').textContent = 'DRIVING SUMMARY';
     this.$('#results-modal').classList.add('open');
-=======
-    // drive hud
-    if (this.driveMode) this.$('#hud-speed').textContent = Math.round(Math.abs(this.engine.player.v) * KMH);
->>>>>>> 537061ed35c7d92f7bb486f3a7ec519bfed51bb6
   }
 }

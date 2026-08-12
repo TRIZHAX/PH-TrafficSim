@@ -8,10 +8,7 @@ import { TrafficSimulation } from '../simulation/TrafficSimulation.js';
 import { ScenarioManager } from '../simulation/ScenarioManager.js';
 import { StatisticsManager } from '../analytics/StatisticsManager.js';
 import { DataRecorder } from '../analytics/DataRecorder.js';
-<<<<<<< HEAD
 import { DrivingMonitor } from '../analytics/DrivingMonitor.js';
-=======
->>>>>>> 537061ed35c7d92f7bb486f3a7ec519bfed51bb6
 import { PlayerVehicle } from '../vehicles/PlayerVehicle.js';
 import { bus } from './EventBus.js';
 import { SIM } from './Config.js';
@@ -42,10 +39,7 @@ export class SimulationEngine {
     this.traffic.setPlayer(this.player);
     this.stats = new StatisticsManager(this);
     this.recorder = new DataRecorder(this);
-<<<<<<< HEAD
     this.driving = new DrivingMonitor(this);
-=======
->>>>>>> 537061ed35c7d92f7bb486f3a7ec519bfed51bb6
     this.player.active = false;
     this.clock.reset();
     bus.emit('map:loaded', { id, network });
@@ -56,10 +50,7 @@ export class SimulationEngine {
     this.clock.reset();
     this.stats.reset();
     this.recorder.reset();
-<<<<<<< HEAD
     this.driving.reset();
-=======
->>>>>>> 537061ed35c7d92f7bb486f3a7ec519bfed51bb6
     bus.emit('sim:started');
   }
 
@@ -72,10 +63,7 @@ export class SimulationEngine {
       this.incidents.step(SIM.dt);
       this.traffic.step();
       if (this.player.active) this.player.step(playerInput, this.traffic.env());
-<<<<<<< HEAD
       this.driving.step(SIM.dt);
-=======
->>>>>>> 537061ed35c7d92f7bb486f3a7ec519bfed51bb6
       this.stats.step(SIM.dt);
       this.recorder.step(SIM.dt);
     }
