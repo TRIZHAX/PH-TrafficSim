@@ -708,3 +708,102 @@ svg { flex-shrink: 0; }
 
 /* Congestion status dot in dashboards uses the small filled 'dot' glyph */
 #ss-cong .inline-ico { color: inherit; }
+
+/* ============================================================
+   ORIENTATION — rotate-to-landscape gate + driving layout
+   Fixes the cramped mobile portrait driving view: on a phone,
+   3D driving asks the user to turn the device sideways, and the
+   touch controls / HUD are re-laid-out for landscape so nothing
+   overlaps the road ahead.
+   ============================================================ */
+
+/* ---- Rotate-to-landscape blocking overlay (3D driving on a portrait phone) ---- */
+#rotate-overlay {
+  position: absolute; inset: 0; z-index: 48;
+  display: none; align-items: center; justify-content: center;
+  padding: 34px; text-align: center;
+  background: radial-gradient(ellipse 80% 60% at 50% 40%, rgba(56,224,125,.06), transparent 65%), rgba(5,8,12,.94);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+}
+#rotate-overlay.show { display: flex; }
+.ro-inner { display: flex; flex-direction: column; align-items: center; gap: 15px; max-width: 320px; }
+.ro-phone { color: var(--green); transform-origin: 50% 50%; animation: roTilt 2.6s ease-in-out infinite; }
+@keyframes roTilt {
+  0%, 12%   { transform: rotate(0deg); }
+  46%, 82%  { transform: rotate(-90deg); }
+  100%      { transform: rotate(0deg); }
+}
+.ro-title {
+  font-family: var(--font-display); font-size: 20px; font-weight: 700;
+  letter-spacing: .08em; color: var(--text);
+}
+.ro-text { font-size: 13px; line-height: 1.6; color: var(--text-dim); }
+.ro-exit {
+  margin-top: 6px; padding: 9px 18px; border-radius: 11px;
+  border: 1px solid var(--glass-border); color: var(--text-dim);
+  font-family: var(--font-display); font-size: 11px; font-weight: 600;
+  letter-spacing: .1em; text-transform: uppercase;
+}
+.ro-exit:hover { color: var(--red); border-color: rgba(255,77,77,.4); background: rgba(255,77,77,.06); }
+
+/* While the gate is up, keep the covered driving chrome from peeking through. */
+body.drive-gated #touch-controls,
+body.drive-gated #drive-hud-pro,
+body.drive-gated #drive-warnings { display: none !important; }
+
+/* ---- Declutter the view while driving on any small (mobile) screen ---- */
+@media (max-width: 860px) {
+  body.driving #mobile-nav   { display: none !important; }
+  body.driving #status-strip { display: none !important; }
+  body.driving #dash         { display: none !important; }
+}
+
+/* ---- Phone held sideways (landscape, short viewport) while driving ----
+   `max-height: 500px` reliably targets phones in landscape (their height is
+   small) without catching tablets or desktops, so it works regardless of the
+   device's exact landscape width. */
+@media (orientation: landscape) and (max-height: 500px) {
+  /* full-bleed viewport: drop the desktop rail and all secondary chrome */
+  body.driving #nav-rail                     { display: none !important; }
+  body.driving #shell                        { grid-template-columns: 1fr !important; }
+  body.driving #mobile-nav,
+  body.driving #status-strip,
+  body.driving #dash,
+  body.driving #conditions,
+  body.driving #topbar .tb-group.desktop-only { display: none !important; }
+
+  /* touch buttons anchored in the bottom corners, within thumb reach */
+  #touch-controls.active { display: block; }
+  #tc-left  { left: 18px;  right: auto; bottom: 16px; top: auto; width: 60px; height: 60px; }
+  #tc-right { left: 92px;  right: auto; bottom: 16px; top: auto; width: 60px; height: 60px; }
+  #tc-accel { right: 18px; left: auto;  bottom: 16px; top: auto; width: 66px; height: 66px; }
+  #tc-brake { right: 92px; left: auto;  bottom: 20px; top: auto; width: 58px; height: 58px; font-size: 10px; }
+
+  /* compact telemetry HUD centred at the bottom, clear of the corner buttons */
+  #drive-hud-pro {
+    bottom: 12px; left: 50%; right: auto; top: auto;
+    transform: translateX(-50%);
+    width: auto; max-width: 56vw;
+    align-items: center; flex-wrap: wrap; justify-content: center;
+    gap: 5px 8px; padding: 6px 10px; border-radius: 13px;
+  }
+  #drive-hud-pro .dh-cluster { gap: 8px; }
+  #drive-hud-pro .dh-speed-block { min-width: 50px; padding: 1px 6px; }
+  #drive-hud-pro .dh-speed-val { font-size: 20px; }
+  #drive-hud-pro .dh-speed-unit { font-size: 7.5px; }
+  #drive-hud-pro .dh-limit-ring { width: 32px; height: 32px; font-size: 12px; border-width: 2.5px; }
+  #drive-hud-pro .dh-limit-cap { font-size: 6.5px; }
+  #drive-hud-pro .dh-status { flex-direction: row; flex-wrap: wrap; gap: 4px; flex: 0 1 auto; }
+  #drive-hud-pro .dh-chip { min-width: 0; font-size: 9px; padding: 3px 6px; gap: 4px; border-radius: 7px; }
+  #drive-hud-pro .dh-chip svg { width: 12px; height: 12px; }
+  #drive-hud-pro .dh-exit { align-self: center; padding: 5px 9px; font-size: 8.5px; }
+  #drive-hud-pro .dh-exit svg { width: 12px; height: 12px; }
+
+  /* warnings drop to the very top so they don't cover the road */
+  #drive-warnings { top: 10px; width: min(72vw, 440px); }
+
+  /* keep the rotate gate readable in the short viewport */
+  .ro-inner { gap: 11px; }
+  .ro-title { font-size: 17px; }
+  .ro-text { font-size: 12px; }
+}

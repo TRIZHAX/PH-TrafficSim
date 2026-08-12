@@ -22,6 +22,7 @@ export class UI {
     this.mobile = new MobileControls(this);
     this.driveHud = new DriveHUD(this);
     this._bindEvents();
+    this._bindOrientation();
     this._toastTimer = null;
   }
 
@@ -188,6 +189,18 @@ export class UI {
               <button class="btn btn-primary" id="rs-again">RUN AGAIN</button>
               <button class="btn btn-ghost" id="rs-close">CLOSE</button>
             </div>
+          </div>
+        </div>
+
+        <div id="rotate-overlay">
+          <div class="ro-inner">
+            <svg class="ro-phone" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="7" y="2" width="10" height="20" rx="2.4"/>
+              <path d="M11 18h2"/>
+            </svg>
+            <div class="ro-title">Rotate your phone</div>
+            <p class="ro-text">3D driving works best in landscape. Turn your device sideways to take the wheel with full-width controls.</p>
+            <button class="ro-exit" id="ro-exit">Exit vehicle</button>
           </div>
         </div>
 
@@ -418,6 +431,46 @@ export class UI {
     setTimeout(() => { const h = this.$('#desktop-hint'); if (h) h.style.opacity = '0'; }, 12000);
   }
 
+  /**
+   * Orientation gate (mobile 3D driving). On a touch phone held in portrait,
+   * 3D driving is cramped and the road ahead is hidden behind the HUD, so we
+   * show a blocking "rotate your phone" overlay that pauses driving input and
+   * auto-clears the instant the device is turned to landscape. Both renderers
+   * already listen to window 'resize' (which fires on rotation), so the canvas
+   * follows the new aspect automatically. */
+  _bindOrientation() {
+    this.$('#ro-exit')?.addEventListener('click', () => this.exitDrive());
+    this._onOrient = () => this._syncOrientationGate();
+    window.addEventListener('resize', this._onOrient);
+    window.addEventListener('orientationchange', this._onOrient);
+  }
+
+  /** True when running on a phone-sized screen (matches the CSS mobile bp). */
+  _isMobileViewport() {
+    return this.mobile.isTouch && window.matchMedia('(max-width: 860px)').matches;
+  }
+
+  /** True when the phone is currently held upright (portrait). */
+  _isPortrait() {
+    return window.matchMedia('(orientation: portrait)').matches;
+  }
+
+  /**
+   * Show/hide the rotate gate based on current mode + orientation. The gate is
+   * only required for 3D driving on a portrait phone (per product decision).
+   * While gated, we freeze driving input so the parked car doesn't drift.
+   */
+  _syncOrientationGate() {
+    const gate = this.driveMode && this.mode === '3d' && this._isMobileViewport() && this._isPortrait();
+    const overlay = this.$('#rotate-overlay');
+    if (!overlay) return;
+    overlay.classList.toggle('show', gate);
+    document.body.classList.toggle('drive-gated', gate);
+    // Freeze/thaw driving input so the vehicle holds still behind the overlay.
+    if (this.app.input) this.app.input.enabled = !gate;
+    if (gate) this.app.input?.setTouch({ throttle: 0, steer: 0, handbrake: false });
+  }
+
   togglePause() {
     const e = this.engine;
     e.clock.paused = !e.clock.paused;
@@ -433,6 +486,7 @@ export class UI {
     this.$('#btn-3d').classList.toggle('active', mode === '3d');
     if (mode === '3d') this.app.enter3D();
     else this.app.exit2D?.();
+    this._syncOrientationGate();
     this.toast(mode === '3d' ? '3D visualization — same simulation state' : '2D simulation view');
   }
 
@@ -443,18 +497,21 @@ export class UI {
     const cam = this.app.renderer2d.camera;
     this.engine.spawnPlayer(type, cam.x, cam.y);
     this.driveMode = true;
+    document.body.classList.add('driving');
     this.app.renderer2d._followPlayer = true;
     cam.follow = this.engine.player;
     if (cam.zoom < 2) cam.zoom = 3.2;
     this.driveHud.show();
     if (this.mobile.isTouch) this.$('#touch-controls').classList.add('active');
     this.app.renderer3d?.setCameraMode?.('third');
+    this._syncOrientationGate();
     this.toast(`Driving ${VEHICLE_TYPES[type].label} — ${this.mobile.isTouch ? 'use touch controls' : 'W/A/S/D to drive'}`);
   }
 
   exitDrive() {
     if (!this.driveMode) return;
     this.driveMode = false;
+    document.body.classList.remove('driving');
     const summary = this.engine.driving?.summary?.();
     this.engine.removePlayer();
     this.app.renderer2d._followPlayer = false;
@@ -462,6 +519,7 @@ export class UI {
     this.driveHud.hide();
     this.$('#touch-controls').classList.remove('active');
     this.app.renderer3d?.setCameraMode?.('overview');
+    this._syncOrientationGate();
     if (summary && summary.distance > 5) this.showDriveResults(summary);
   }
 
