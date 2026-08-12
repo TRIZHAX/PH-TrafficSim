@@ -82,9 +82,75 @@ const P = {
     '<path d="M3 8h10a2.5 2.5 0 1 0-2.5-2.5"/><path d="M3 13h14a2.5 2.5 0 1 1-2.5 2.5"/><path d="M3 18h7"/>',
   // Pause / play (HUD sim state)
   pause: '<path d="M8 5v14M16 5v14"/>',
+  play: '<path d="M7 5.2v13.6a.6.6 0 0 0 .92.5l10.8-6.8a.6.6 0 0 0 0-1L7.92 4.7A.6.6 0 0 0 7 5.2Z"/>',
   // Signal-fail / flashing
   hazard:
-    '<path d="M12 3.2 22 20H2L12 3.2Z"/><path d="M12 9v3"/><path d="M9 15h6"/>'
+    '<path d="M12 3.2 22 20H2L12 3.2Z"/><path d="M12 9v3"/><path d="M9 15h6"/>',
+
+  /* ---- vehicle classes (fleet mix, vehicle-select, status strip) ---- */
+  motorcycle:
+    '<circle cx="5.5" cy="17" r="3"/><circle cx="18.5" cy="17" r="3"/>' +
+    '<path d="M8.5 17h6l-3-5h4l2-3h-3"/><path d="M11.5 12 9 8H6.5"/>',
+  bus:
+    '<rect x="3" y="5" width="18" height="12" rx="2"/><path d="M3 11h18"/>' +
+    '<circle cx="7.5" cy="19" r="1.5"/><circle cx="16.5" cy="19" r="1.5"/>' +
+    '<path d="M6 8h4M14 8h4"/>',
+  truck:
+    '<path d="M3 6h11v9H3z"/><path d="M14 9h4l3 3v3h-7z"/>' +
+    '<circle cx="7" cy="18" r="1.8"/><circle cx="17.5" cy="18" r="1.8"/>',
+  tricycle:
+    '<path d="M4 14l2-5h6l2 4h3l2 3"/>' +
+    '<circle cx="6" cy="17" r="2"/><circle cx="13" cy="17" r="2"/><circle cx="19" cy="17" r="1.6"/>',
+
+  /* ---- navigation / chrome ---- */
+  map:
+    '<path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Z"/><path d="M9 4v14M15 6v14"/>',
+  flask:
+    '<path d="M9 3h6M10 3v6l-5 8.5A2 2 0 0 0 6.8 21h10.4a2 2 0 0 0 1.8-3.5L14 9V3"/><path d="M7.5 15h9"/>',
+  chart:
+    '<path d="M4 4v16h16"/><path d="m7 14 3-4 3 3 4-6"/>',
+  gear:
+    '<circle cx="12" cy="12" r="3.2"/>' +
+    '<path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5 5l2.1 2.1M16.9 16.9 19 19M19 5l-2.1 2.1M7.1 16.9 5 19"/>',
+  camera:
+    '<rect x="3" y="7" width="18" height="12" rx="2"/><path d="M8 7l1.5-2h5L16 7"/><circle cx="12" cy="13" r="3.2"/>',
+  sliders:
+    '<path d="M4 6h8M16 6h4M4 12h2M10 12h10M4 18h10M18 18h2"/>' +
+    '<circle cx="14" cy="6" r="2"/><circle cx="8" cy="12" r="2"/><circle cx="16" cy="18" r="2"/>',
+  menu: '<path d="M4 6h16M4 12h16M4 18h16"/>',
+  pin:
+    '<path d="M12 21s7-5.5 7-11a7 7 0 1 0-14 0c0 5.5 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/>',
+  flag: '<path d="M5 21V4M5 4h11l-2 3 2 3H5"/>',
+  download: '<path d="M12 3v12M7 11l5 5 5-5M5 20h14"/>',
+  clipboard:
+    '<rect x="5" y="5" width="14" height="16" rx="2"/><path d="M9 5V3.5h6V5"/><path d="M9 11h6M9 15h4"/>',
+  close: '<path d="M6 6l12 12M18 6 6 18"/>',
+  bolt: '<path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/>',
+
+  /* ---- directional (touch drive controls) ---- */
+  arrowUp: '<path d="M12 20V5M6 11l6-6 6 6"/>',
+  arrowLeft: '<path d="M20 12H5M11 6l-6 6 6 6"/>',
+  arrowRight: '<path d="M4 12h15M13 6l6 6-6 6"/>',
+
+  /* ---- incidents / road works ---- */
+  cone: '<path d="M10 4h4l4 16H6z"/><path d="M8.5 11h7M7.5 16h9M4 20h16"/>',
+  wrench:
+    '<path d="M20 5a4 4 0 0 1-5.3 5.3L6 19l-1-1 8.7-8.7A4 4 0 0 1 19 4l-2.3 2.3 1 1L20 5Z"/>',
+  medical:
+    '<rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8v8M8 12h8"/>',
+
+  /* ---- weather (scenario tiles) ---- */
+  sunrise:
+    '<path d="M4 18h16M6.5 18a5.5 5.5 0 0 1 11 0"/>' +
+    '<path d="M12 2v6M9 6l3-3 3 3M4.5 8.5 6 10M19.5 8.5 18 10M2 14h2M20 14h2"/>',
+  sunset:
+    '<path d="M4 18h16M6.5 18a5.5 5.5 0 0 1 11 0"/>' +
+    '<path d="M12 3v6M9 6l3 3 3-3M4.5 8.5 6 10M19.5 8.5 18 10M2 14h2M20 14h2"/>',
+
+  /* ---- generic filled status dot (coloured via CSS currentColor) ---- */
+  dot: '<circle cx="12" cy="12" r="6" fill="currentColor" stroke="none"/>',
+  droplet:
+    '<path d="M12 3s6 6.5 6 10.5a6 6 0 0 1-12 0C6 9.5 12 3 12 3Z"/>'
 };
 
 /* Weather id → glyph name mapping (matches Config WEATHER ids). */

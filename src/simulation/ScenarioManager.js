@@ -19,7 +19,7 @@ export class ScenarioManager {
   list() { return Object.entries(SCENARIOS).map(([id, s]) => ({ id, ...s })); }
 
   get active() {
-    if (this.activeId === 'custom') return { id: 'custom', label: 'Custom', icon: '🧪', ...this.custom };
+    if (this.activeId === 'custom') return { id: 'custom', label: 'Custom', icon: 'flask', ...this.custom };
     return { id: this.activeId, ...SCENARIOS[this.activeId] };
   }
 

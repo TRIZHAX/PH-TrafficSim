@@ -3,6 +3,7 @@ import { WEATHER, ROAD_CONDITIONS, INCIDENT_TYPES, VEHICLE_TYPES, KMH, SCENARIOS
 import { Pages } from './Pages.js';
 import { MobileControls } from './MobileControls.js';
 import { DriveHUD } from './DriveHUD.js';
+import { icon } from './icons.js';
 
 /**
  * UI — builds the whole shell (nav rail, top bar, dashboards, drawer,
@@ -48,12 +49,12 @@ export class UI {
     shell.innerHTML = `
       <nav id="nav-rail">
         <div class="rail-logo">PH</div>
-        <button class="rail-btn active" data-nav="simulate">🚦<span>Simulate</span></button>
-        <button class="rail-btn" data-nav="explore">🧭<span>Explore</span></button>
-        <button class="rail-btn" data-nav="maps">🗺<span>Maps</span></button>
-        <button class="rail-btn" data-nav="lab">🧪<span>Lab</span></button>
-        <button class="rail-btn" data-nav="analytics">📈<span>Analytics</span></button>
-        <button class="rail-btn" data-nav="settings">⚙<span>Settings</span></button>
+        <button class="rail-btn active" data-nav="simulate">${icon('signal', { size: 22 })}<span>Simulate</span></button>
+        <button class="rail-btn" data-nav="explore">${icon('compass', { size: 22 })}<span>Explore</span></button>
+        <button class="rail-btn" data-nav="maps">${icon('map', { size: 22 })}<span>Maps</span></button>
+        <button class="rail-btn" data-nav="lab">${icon('flask', { size: 22 })}<span>Lab</span></button>
+        <button class="rail-btn" data-nav="analytics">${icon('chart', { size: 22 })}<span>Analytics</span></button>
+        <button class="rail-btn" data-nav="settings">${icon('gear', { size: 22 })}<span>Settings</span></button>
         <div class="rail-spacer"></div>
         <div class="rail-credit">Designed &amp; Created by TRIZHAX</div>
       </nav>
@@ -64,7 +65,7 @@ export class UI {
         <div id="topbar">
           <div class="brand-chip">
             <h1>PH <em>TRAFFICSIM</em></h1>
-            <span class="brand-loc" id="brand-loc">📍 San Miguel, Bulacan</span>
+            <span class="brand-loc" id="brand-loc">${icon('pin', { size: 13, cls: 'inline-ico' })}<span id="brand-loc-txt">San Miguel, Bulacan</span></span>
           </div>
           <div class="mode-switch" role="tablist" aria-label="View mode">
             <button id="btn-2d" class="active">2D</button>
@@ -72,16 +73,16 @@ export class UI {
           </div>
           <div class="topbar-spacer"></div>
           <div class="tb-group desktop-only" id="speed-group">
-            <button class="tb-btn" id="btn-play" title="Play / Pause (P)">⏸</button>
+            <button class="tb-btn" id="btn-play" title="Play / Pause (P)">${icon('pause', { size: 16 })}</button>
             <button class="tb-btn speed active" data-speed="1">1×</button>
             <button class="tb-btn speed" data-speed="2">2×</button>
             <button class="tb-btn speed" data-speed="5">5×</button>
             <button class="tb-btn speed" data-speed="10">10×</button>
           </div>
           <div class="tb-group">
-            <button class="tb-btn" id="btn-drive" title="Drive a vehicle">🚗</button>
-            <button class="tb-btn" id="btn-camera" title="Camera (C)">🎥</button>
-            <button class="tb-btn" id="btn-drawer" title="Control panel">🎛</button>
+            <button class="tb-btn" id="btn-drive" title="Drive a vehicle">${icon('steering', { size: 17 })}</button>
+            <button class="tb-btn" id="btn-camera" title="Camera (C)">${icon('camera', { size: 17 })}</button>
+            <button class="tb-btn" id="btn-drawer" title="Control panel">${icon('sliders', { size: 17 })}</button>
           </div>
         </div>
 
@@ -104,9 +105,9 @@ export class UI {
         <section id="conditions" class="glass">
           <div class="panel-title">Conditions <button class="collapse-btn" data-collapse="conditions">—</button></div>
           <div class="cond-body">
-            <div class="cond-row"><span class="k">Weather</span><span class="v" id="cd-weather">☀️ Clear</span></div>
+            <div class="cond-row"><span class="k">Weather</span><span class="v cond-v" id="cd-weather">${icon('sun', { size: 15, cls: 'inline-ico' })}<span>Clear</span></span></div>
             <div class="cond-row"><span class="k">Visibility</span><span class="v" id="cd-vis">100%</span></div>
-            <div class="cond-row"><span class="k">Road</span><span class="v" id="cd-road">🟢 Good</span></div>
+            <div class="cond-row"><span class="k">Road</span><span class="v cond-v" id="cd-road">${icon('check', { size: 15, cls: 'inline-ico' })}<span>Good</span></span></div>
             <div class="cond-row"><span class="k">Road Quality</span><span class="v" id="cd-quality">100%</span></div>
             <div class="cond-row"><span class="k">Incidents</span><span class="v" id="cd-inc">None</span></div>
             <div class="cond-row"><span class="k">Signal Green</span><span class="v" id="cd-green">25s</span></div>
@@ -124,12 +125,12 @@ export class UI {
         </aside>
 
         <div id="status-strip" class="glass">
-          <span id="ss-cong">🟢 <b>LOW</b></span><span class="sep"></span>
-          <span>🚗 <b id="ss-veh">0</b></span><span class="sep"></span>
-          <span>⚡ <b id="ss-speed">0</b> km/h</span><span class="sep"></span>
-          <span>📊 <b id="ss-density">0</b>%</span><span class="sep"></span>
-          <span>⏱ <b id="ss-delay">0</b>s</span><span class="sep"></span>
-          <span>🕐 <b id="ss-time">00:00</b></span>
+          <span id="ss-cong" class="ss-item">${icon('dot', { size: 13, cls: 'inline-ico' })}<b>LOW</b></span><span class="sep"></span>
+          <span class="ss-item">${icon('car', { size: 15, cls: 'inline-ico' })}<b id="ss-veh">0</b></span><span class="sep"></span>
+          <span class="ss-item">${icon('gauge', { size: 15, cls: 'inline-ico' })}<b id="ss-speed">0</b> km/h</span><span class="sep"></span>
+          <span class="ss-item">${icon('density', { size: 15, cls: 'inline-ico' })}<b id="ss-density">0</b>%</span><span class="sep"></span>
+          <span class="ss-item">${icon('clock', { size: 15, cls: 'inline-ico' })}<b id="ss-delay">0</b>s</span><span class="sep"></span>
+          <span class="ss-item">${icon('clock', { size: 15, cls: 'inline-ico' })}<b id="ss-time">00:00</b></span>
         </div>
 
         <div id="drive-hud" class="glass">
@@ -138,25 +139,25 @@ export class UI {
         </div>
 
         <div id="touch-controls">
-          <button class="tc-btn" id="tc-left">◀</button>
-          <button class="tc-btn" id="tc-right">▶</button>
-          <button class="tc-btn" id="tc-accel">▲</button>
+          <button class="tc-btn" id="tc-left">${icon('arrowLeft', { size: 26 })}</button>
+          <button class="tc-btn" id="tc-right">${icon('arrowRight', { size: 26 })}</button>
+          <button class="tc-btn" id="tc-accel">${icon('arrowUp', { size: 26 })}</button>
           <button class="tc-btn" id="tc-brake">BRAKE</button>
         </div>
 
         <div id="fab-stack">
-          <button class="fab" id="fab-menu">☰</button>
-          <button class="fab" id="fab-stats">📊</button>
-          <button class="fab" id="fab-cam">🎥</button>
-          <button class="fab" id="fab-drive">🚗</button>
+          <button class="fab" id="fab-menu">${icon('menu', { size: 20 })}</button>
+          <button class="fab" id="fab-stats">${icon('chart', { size: 20 })}</button>
+          <button class="fab" id="fab-cam">${icon('camera', { size: 20 })}</button>
+          <button class="fab" id="fab-drive">${icon('steering', { size: 20 })}</button>
         </div>
 
         <nav id="mobile-nav">
-          <button class="active" data-nav="simulate">🚦<span>Simulate</span></button>
-          <button data-nav="maps">🗺<span>Maps</span></button>
-          <button data-nav="lab">🧪<span>Lab</span></button>
-          <button data-nav="analytics">📈<span>Charts</span></button>
-          <button data-nav="settings">⚙<span>More</span></button>
+          <button class="active" data-nav="simulate">${icon('signal', { size: 20 })}<span>Simulate</span></button>
+          <button data-nav="maps">${icon('map', { size: 20 })}<span>Maps</span></button>
+          <button data-nav="lab">${icon('flask', { size: 20 })}<span>Lab</span></button>
+          <button data-nav="analytics">${icon('chart', { size: 20 })}<span>Charts</span></button>
+          <button data-nav="settings">${icon('gear', { size: 20 })}<span>More</span></button>
         </nav>
 
         <p class="desktop-hint" id="desktop-hint">W/A/S/D drive · drag to pan · scroll to zoom · C camera · P pause</p>
@@ -167,8 +168,8 @@ export class UI {
           <div class="vm-card glass">
             <h3>SELECT VEHICLE</h3>
             <div class="vm-options">
-              <button class="vm-opt" data-vehicle="car"><div class="ico">🚗</div><h4>CAR</h4><p>max 50 km/h</p></button>
-              <button class="vm-opt" data-vehicle="motorcycle"><div class="ico">🏍</div><h4>MOTORCYCLE</h4><p>max 60 km/h</p></button>
+              <button class="vm-opt" data-vehicle="car"><div class="ico">${icon('car', { size: 40 })}</div><h4>CAR</h4><p>max 50 km/h</p></button>
+              <button class="vm-opt" data-vehicle="motorcycle"><div class="ico">${icon('motorcycle', { size: 40 })}</div><h4>MOTORCYCLE</h4><p>max 60 km/h</p></button>
             </div>
             <button class="vm-cancel" id="vm-cancel">Cancel</button>
           </div>
@@ -177,7 +178,7 @@ export class UI {
         <div id="results-modal">
           <div class="results-card glass">
             <h3>SIMULATION SNAPSHOT</h3>
-            <p class="loc" id="rs-loc">📍 San Miguel, Bulacan</p>
+            <p class="loc" id="rs-loc">${icon('pin', { size: 13, cls: 'inline-ico' })}<span id="rs-loc-txt">San Miguel, Bulacan</span></p>
             <div class="results-grid" id="rs-grid"></div>
             <div class="btn-row">
               <button class="btn btn-ghost" id="rs-analytics">VIEW ANALYTICS</button>
@@ -210,7 +211,7 @@ export class UI {
         <div class="ctl-group">
           <div class="ctl-label">Fleet Mix</div>
           ${Object.entries(VEHICLE_TYPES).map(([id, t]) => `
-            <div class="ctl-label" style="text-transform:none;font-size:11.5px">${t.icon} ${t.label} <span class="val" id="mix-val-${id}">${Math.round((mix[id] || 0) * 100)}%</span></div>
+            <div class="ctl-label ctl-label-ico" style="text-transform:none;font-size:11.5px">${icon(t.icon, { size: 16, cls: 'inline-ico' })}<span>${t.label}</span> <span class="val" id="mix-val-${id}">${Math.round((mix[id] || 0) * 100)}%</span></div>
             <input type="range" class="ctl-mix" data-type="${id}" min="0" max="100" value="${Math.round((mix[id] || 0) * 100)}">
           `).join('')}
         </div>
@@ -219,7 +220,7 @@ export class UI {
           <input type="range" id="ctl-sls" min="50" max="120" step="5" value="${Math.round((e.scenarios.speedLimitScale || 1) * 100)}">
         </div>
         <button class="btn btn-primary" id="ctl-apply-traffic">APPLY &amp; RESEED</button>
-        <button class="btn btn-ghost" id="ctl-results">📋 SIMULATION SNAPSHOT</button>`;
+        <button class="btn btn-ghost btn-ico" id="ctl-results">${icon('clipboard', { size: 15 })}<span>SIMULATION SNAPSHOT</span></button>`;
       body.querySelector('#ctl-volume').addEventListener('input', ev => {
         this.$('#vol-val').textContent = `${ev.target.value} vehicles`;
         e.traffic.setTarget(+ev.target.value);
@@ -247,7 +248,7 @@ export class UI {
         <div class="ctl-group">
           <div class="ctl-label">Nature Conditions</div>
           <div class="chip-row">
-            ${Object.entries(WEATHER).map(([id, w]) => `<button class="chip ${e.weather.current === id ? 'active' : ''}" data-weather="${id}">${w.icon} ${w.label}</button>`).join('')}
+            ${Object.entries(WEATHER).map(([id, w]) => `<button class="chip chip-ico ${e.weather.current === id ? 'active' : ''}" data-weather="${id}">${icon(w.icon, { size: 15, cls: 'inline-ico' })}<span>${w.label}</span></button>`).join('')}
           </div>
         </div>
         <div class="ctl-group" id="weather-info"></div>`;
@@ -273,7 +274,7 @@ export class UI {
         <div class="ctl-group">
           <div class="ctl-label">Road Surface</div>
           <div class="chip-row">
-            ${Object.entries(ROAD_CONDITIONS).map(([id, r]) => `<button class="chip ${e.roadCond.condition === id ? 'active' : ''}" data-road="${id}">${r.icon} ${r.label}</button>`).join('')}
+            ${Object.entries(ROAD_CONDITIONS).map(([id, r]) => `<button class="chip chip-ico ${e.roadCond.condition === id ? 'active' : ''}" data-road="${id}">${icon(r.icon, { size: 15, cls: 'inline-ico' })}<span>${r.label}</span></button>`).join('')}
           </div>
         </div>
         <div class="ctl-group">
@@ -283,7 +284,7 @@ export class UI {
         <div class="ctl-group">
           <div class="ctl-label">Incidents &amp; Works</div>
           <div class="chip-row">
-            ${Object.entries(INCIDENT_TYPES).map(([id, t]) => `<button class="chip danger" data-incident="${id}">${t.icon} ${t.label}</button>`).join('')}
+            ${Object.entries(INCIDENT_TYPES).map(([id, t]) => `<button class="chip chip-ico danger" data-incident="${id}">${icon(t.icon, { size: 15, cls: 'inline-ico' })}<span>${t.label}</span></button>`).join('')}
           </div>
           <button class="btn btn-danger" id="ctl-clear-inc">CLEAR ALL INCIDENTS</button>
           <div class="ctl-label" style="margin-top:4px">Active <span class="val" id="inc-list">none</span></div>
@@ -307,7 +308,7 @@ export class UI {
       };
       body.querySelectorAll('[data-incident]').forEach(b => b.addEventListener('click', () => {
         const inc = e.incidents.create(b.dataset.incident);
-        if (inc) this.toast(`${inc.spec.icon} ${inc.spec.label} created${inc.duration !== Infinity ? ` (${inc.duration}s)` : ''}`);
+        if (inc) this.toast(`${inc.spec.label} created${inc.duration !== Infinity ? ` (${inc.duration}s)` : ''}`);
         updateIncList();
       }));
       body.querySelector('#ctl-clear-inc').addEventListener('click', () => { e.incidents.clearAll(); updateIncList(); this.toast('All incidents cleared'); });
@@ -316,11 +317,11 @@ export class UI {
       const t = e.lights.getTiming();
       body.innerHTML = `
         <div class="ctl-group">
-          <div class="ctl-label">🟢 Green Time <span class="val" id="g-val">${t.green}s</span></div>
+          <div class="ctl-label ctl-label-ico"><span class="sig-dot" style="background:var(--green)"></span><span>Green Time</span> <span class="val" id="g-val">${t.green}s</span></div>
           <input type="range" id="ctl-green" min="10" max="60" value="${t.green}">
-          <div class="ctl-label">🟡 Yellow Time <span class="val" id="y-val">${t.yellow}s</span></div>
+          <div class="ctl-label ctl-label-ico"><span class="sig-dot" style="background:var(--amber)"></span><span>Yellow Time</span> <span class="val" id="y-val">${t.yellow}s</span></div>
           <input type="range" id="ctl-yellow" min="3" max="10" value="${t.yellow}">
-          <div class="ctl-label">🔴 Red Time <span class="val" id="r-val">${t.red}s</span></div>
+          <div class="ctl-label ctl-label-ico"><span class="sig-dot" style="background:var(--red)"></span><span>Red Time</span> <span class="val" id="r-val">${t.red}s</span></div>
           <input type="range" id="ctl-red" min="10" max="60" value="${t.red}">
         </div>
         <p style="font-size:11px;color:var(--text-dim);line-height:1.5">Timing applies to all ${e.lights.controllers.size} signalized intersections on this map. Red time controls the opposing phase's green.</p>`;
@@ -358,7 +359,7 @@ export class UI {
     document.querySelectorAll('[data-speed]').forEach(b => b.addEventListener('click', () => {
       e.clock.speed = +b.dataset.speed;
       e.clock.paused = false;
-      this.$('#btn-play').textContent = '⏸';
+      this.$('#btn-play').innerHTML = icon('pause', { size: 16 });
       document.querySelectorAll('[data-speed]').forEach(x => x.classList.toggle('active', x === b));
     }));
 
@@ -405,8 +406,8 @@ export class UI {
 
     // Engine events
     bus.on('map:loaded', () => {
-      this.$('#brand-loc').textContent = `📍 ${e.maps.current.name}`;
-      this.$('#rs-loc').textContent = `📍 ${e.maps.current.name}`;
+      this.$('#brand-loc-txt').textContent = e.maps.current.name;
+      this.$('#rs-loc-txt').textContent = e.maps.current.name;
     });
     bus.on('weather:changed', () => this._updateConditions());
     bus.on('road:changed', () => { this._updateConditions(); this.app.renderer2d.invalidate(); });
@@ -420,7 +421,7 @@ export class UI {
   togglePause() {
     const e = this.engine;
     e.clock.paused = !e.clock.paused;
-    this.$('#btn-play').textContent = e.clock.paused ? '▶' : '⏸';
+    this.$('#btn-play').innerHTML = icon(e.clock.paused ? 'play' : 'pause', { size: 16 });
     this.toast(e.clock.paused ? 'Paused' : 'Running');
   }
 
@@ -488,7 +489,7 @@ export class UI {
       <div class="result-stat"><div class="k">Average Delay</div><div class="v">${s.delay} sec</div></div>
       <div class="result-stat"><div class="k">Max Queue</div><div class="v">${s.maxQueue} veh</div></div>
       <div class="result-stat"><div class="k">Utilization</div><div class="v">${s.utilization}%</div></div>
-      <div class="result-stat" style="grid-column:1/-1"><div class="k">Traffic Status</div><div class="v" style="color:${s.congestion.color}">${s.congestion.icon} ${s.congestion.label}</div></div>`;
+      <div class="result-stat" style="grid-column:1/-1"><div class="k">Traffic Status</div><div class="v v-ico" style="color:${s.congestion.color}">${icon('dot', { size: 13, cls: 'inline-ico' })}<span>${s.congestion.label}</span></div></div>`;
     this.$('#results-modal').classList.add('open');
   }
 
@@ -497,12 +498,12 @@ export class UI {
     const e = this.engine;
     const w = e.weather.get();
     const r = e.roadCond.get();
-    this.$('#cd-weather').textContent = `${w.icon} ${w.label}`;
+    this.$('#cd-weather').innerHTML = `${icon(w.icon, { size: 15, cls: 'inline-ico' })}<span>${w.label}</span>`;
     this.$('#cd-vis').textContent = `${Math.round(w.visibility * 100)}%`;
-    this.$('#cd-road').textContent = `${r.icon} ${r.label}`;
+    this.$('#cd-road').innerHTML = `${icon(r.icon, { size: 15, cls: 'inline-ico' })}<span style="color:${r.color || 'inherit'}">${r.label}</span>`;
     this.$('#cd-quality').textContent = `${e.roadCond.quality}%`;
     const incs = e.incidents.incidents;
-    this.$('#cd-inc').textContent = incs.length ? incs.map(i => i.spec.icon).join(' ') + ` ${incs.length}` : 'None';
+    this.$('#cd-inc').textContent = incs.length ? `${incs.length} active` : 'None';
     this.$('#cd-green').textContent = `${e.lights.getTiming().green}s`;
   }
 
@@ -525,7 +526,8 @@ export class UI {
     this.$('#st-cap').innerHTML = `${s.capacity}<small>%</small>`;
     this.$('#bar-cap').style.width = `${s.capacity}%`;
     // strip
-    this.$('#ss-cong').innerHTML = `${c.icon} <b style="color:${c.color}">${c.label}</b>`;
+    this.$('#ss-cong').innerHTML = `${icon('dot', { size: 13, cls: 'inline-ico' })}<b style="color:${c.color}">${c.label}</b>`;
+    this.$('#ss-cong').style.color = c.color;
     this.$('#ss-veh').textContent = s.vehicles;
     this.$('#ss-speed').textContent = s.avgSpeed;
     this.$('#ss-density').textContent = s.density;

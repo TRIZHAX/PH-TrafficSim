@@ -248,8 +248,7 @@ export class Renderer2D {
   _drawIncidents(ctx) {
     for (const inc of this.engine.incidents.incidents) {
       if (inc.type === 'signalFail') {
-        ctx.font = '7px sans-serif'; ctx.textAlign = 'center';
-        ctx.fillText('🚦', inc.x, inc.y - 10);
+        this._incidentBadge(ctx, inc.x, inc.y - 10, '#ffc14d', 'signal');
         continue;
       }
       const lane = inc.lane;
@@ -262,10 +261,9 @@ export class Renderer2D {
       for (let s = zoneStart; s <= zoneEnd; s += 4) { const p = lane.at(s); pts.push([p.x, p.y]); }
       if (pts.length > 1) { this._path(ctx, pts); ctx.stroke(); }
       ctx.setLineDash([]);
-      // icon
-      ctx.font = '8px sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-      const icons = { construction: '🚧', breakdown: '🛠', accident: '🚑', laneClosure: '⛔' };
-      ctx.fillText(icons[inc.type] || '⚠', inc.x, inc.y);
+      // vector marker (emoji-free) drawn directly on the canvas
+      const tone = inc.type === 'accident' ? '#ff4d4d' : '#ff8a3d';
+      this._incidentBadge(ctx, inc.x, inc.y, tone, inc.type);
       // cones at zone edges for construction
       if (inc.type === 'construction' || inc.type === 'laneClosure') {
         ctx.fillStyle = '#ff8a3d';
@@ -275,6 +273,48 @@ export class Renderer2D {
         }
       }
     }
+  }
+
+  /**
+   * Draw a compact, emoji-free incident marker directly on the canvas: a small
+   * rounded badge in the incident's tone with a simple vector glyph. World units
+   * are metres, so the badge is ~4m across — legible when zoomed in, unobtrusive
+   * when zoomed out. Mirrors the vector-icon language of the HTML UI.
+   */
+  _incidentBadge(ctx, x, y, tone, type) {
+    const R = 2.0;
+    ctx.save();
+    ctx.translate(x, y);
+    // badge disc
+    ctx.beginPath(); ctx.arc(0, 0, R, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(10,14,20,0.82)'; ctx.fill();
+    ctx.lineWidth = 0.45; ctx.strokeStyle = tone; ctx.stroke();
+    ctx.strokeStyle = tone; ctx.fillStyle = tone;
+    ctx.lineWidth = 0.4; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    ctx.beginPath();
+    if (type === 'construction') {
+      // triangle warning
+      ctx.moveTo(0, -1.05); ctx.lineTo(1.05, 0.85); ctx.lineTo(-1.05, 0.85); ctx.closePath(); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(0, -0.15); ctx.lineTo(0, 0.35); ctx.stroke();
+    } else if (type === 'accident') {
+      // medical cross
+      ctx.moveTo(0, -0.9); ctx.lineTo(0, 0.9); ctx.moveTo(-0.9, 0); ctx.lineTo(0.9, 0); ctx.stroke();
+    } else if (type === 'laneClosure') {
+      // no-entry bar
+      ctx.arc(0, 0, 1.0, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(-0.7, 0); ctx.lineTo(0.7, 0); ctx.stroke();
+    } else if (type === 'signal') {
+      // signal head: three stacked lamps
+      ctx.strokeRect(-0.55, -1.05, 1.1, 2.1);
+      ctx.beginPath();
+      for (let i = -1; i <= 1; i++) { ctx.moveTo(0.28, i * 0.62); ctx.arc(0, i * 0.62, 0.28, 0, Math.PI * 2); }
+      ctx.stroke();
+    } else {
+      // breakdown / generic: wrench-ish slash
+      ctx.moveTo(-0.7, 0.7); ctx.lineTo(0.7, -0.7); ctx.stroke();
+      ctx.beginPath(); ctx.arc(0.55, -0.55, 0.4, 0, Math.PI * 2); ctx.stroke();
+    }
+    ctx.restore();
   }
 
   /* ---- virtual sensors ---- */

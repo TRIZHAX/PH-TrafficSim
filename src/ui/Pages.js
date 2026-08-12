@@ -1,6 +1,7 @@
 import { WEATHER, ROAD_CONDITIONS, INCIDENT_TYPES, VEHICLE_TYPES, SCENARIOS, DEFAULT_MIX, DEFAULT_SETTINGS, SETTINGS_KEY } from '../core/Config.js';
 import { ExperimentManager } from '../analytics/ExperimentManager.js';
 import { drawLineChart } from './Charts.js';
+import { icon } from './icons.js';
 
 const CHART_DEFS = [
   { key: 'vehicles', label: 'Vehicle Count', color: '#5ec8f2' },
@@ -51,20 +52,20 @@ export class Pages {
   _head(inner, title, sub) {
     const h = this.ui.el('div', 'page-head', `
       <h2>${title}<small>${sub}</small></h2>
-      <button class="page-close">✕</button>`);
+      <button class="page-close">${icon('close', { size: 17 })}</button>`);
     h.querySelector('.page-close').addEventListener('click', () => this.close());
     inner.appendChild(h);
   }
 
   /* ================= MAPS ================= */
   _renderMaps(inner) {
-    this._head(inner, 'MAPS', '🇵🇭 Philippine Locations');
+    this._head(inner, 'MAPS', 'Philippine Locations');
     const e = this.engine;
     const grid = this.ui.el('div', 'map-grid');
     for (const m of e.maps.list()) {
       const card = this.ui.el('button', `map-card ${m.id === e.maps.currentId ? 'active' : ''}`, `
         ${m.id === 'san-miguel-bulacan' ? '<span class="tag tag-default">Default</span>' : ''}
-        <span class="flag">🇵🇭</span>
+        <span class="flag">${icon('pin', { size: 20 })}</span>
         <h4>${m.name}</h4>
         <p>${m.region}</p>
         <p style="margin-top:4px;opacity:.8">${m.description}</p>`);
@@ -83,7 +84,7 @@ export class Pages {
     for (const name of e.maps.comingSoon) {
       grid.appendChild(this.ui.el('div', 'map-card locked', `
         <span class="tag tag-soon">Planned</span>
-        <span class="flag">🇵🇭</span><h4>${name}</h4>
+        <span class="flag">${icon('pin', { size: 20 })}</span><h4>${name}</h4>
         <p>Add via src/maps/data/ — see README §Adding Maps</p>`));
     }
     inner.appendChild(grid);
@@ -93,7 +94,7 @@ export class Pages {
     const sg = this.ui.el('div', 'scenario-grid');
     for (const [id, s] of Object.entries(SCENARIOS)) {
       const b = this.ui.el('button', `scenario-card ${this.engine.scenarios.activeId === id ? 'active' : ''}`, `
-        <div class="ico">${s.icon}</div><h4>${s.label}</h4>
+        <div class="ico">${icon(s.icon, { size: 22 })}</div><h4>${s.label}</h4>
         <p>${s.vehicles} veh · ${WEATHER[s.weather].label} · G${s.green}s</p>`);
       b.addEventListener('click', () => {
         this.engine.scenarios.apply(id, true);
@@ -104,7 +105,7 @@ export class Pages {
       sg.appendChild(b);
     }
     // custom scenario tile → opens Traffic Lab
-    const cust = this.ui.el('button', 'scenario-card', `<div class="ico">🧪</div><h4>Custom</h4><p>Configure in Traffic Lab</p>`);
+    const cust = this.ui.el('button', 'scenario-card', `<div class="ico">${icon('flask', { size: 22 })}</div><h4>Custom</h4><p>Configure in Traffic Lab</p>`);
     cust.addEventListener('click', () => this.open('lab'));
     sg.appendChild(cust);
     card.appendChild(sg);
@@ -123,21 +124,21 @@ export class Pages {
         <div class="ctl-label">Vehicle Count <span class="val" id="lab-veh-val">150</span></div>
         <input type="range" id="lab-veh" min="20" max="350" step="10" value="150">
         <div class="ctl-label">Weather</div>
-        <div class="chip-row" id="lab-weather">${Object.entries(WEATHER).map(([id, w], i) => `<button class="chip ${i === 0 ? 'active' : ''}" data-v="${id}">${w.icon} ${w.label}</button>`).join('')}</div>
+        <div class="chip-row" id="lab-weather">${Object.entries(WEATHER).map(([id, w], i) => `<button class="chip chip-ico ${i === 0 ? 'active' : ''}" data-v="${id}">${icon(w.icon, { size: 15, cls: 'inline-ico' })}<span>${w.label}</span></button>`).join('')}</div>
         <div class="ctl-label">Road Condition</div>
-        <div class="chip-row" id="lab-road">${Object.entries(ROAD_CONDITIONS).map(([id, r], i) => `<button class="chip ${i === 0 ? 'active' : ''}" data-v="${id}">${r.icon} ${r.label}</button>`).join('')}</div>
+        <div class="chip-row" id="lab-road">${Object.entries(ROAD_CONDITIONS).map(([id, r], i) => `<button class="chip chip-ico ${i === 0 ? 'active' : ''}" data-v="${id}">${icon(r.icon, { size: 15, cls: 'inline-ico' })}<span>${r.label}</span></button>`).join('')}</div>
         <div class="ctl-label">Green Time <span class="val" id="lab-green-val">30s</span></div>
         <input type="range" id="lab-green" min="10" max="60" value="30">
         <div class="ctl-label">Incident</div>
         <div class="chip-row" id="lab-inc">
           <button class="chip active" data-v="">None</button>
-          ${Object.entries(INCIDENT_TYPES).filter(([id]) => id !== 'signalFail').map(([id, t]) => `<button class="chip danger" data-v="${id}">${t.icon} ${t.label}</button>`).join('')}
+          ${Object.entries(INCIDENT_TYPES).filter(([id]) => id !== 'signalFail').map(([id, t]) => `<button class="chip chip-ico danger" data-v="${id}">${icon(t.icon, { size: 15, cls: 'inline-ico' })}<span>${t.label}</span></button>`).join('')}
         </div>
         <div class="ctl-label">Simulated Duration <span class="val" id="lab-dur-val">5 min</span></div>
         <input type="range" id="lab-dur" min="2" max="15" value="5">
         <div class="progress-line" id="lab-progress" style="display:none"><i style="width:0%"></i></div>
         <div class="btn-row">
-          <button class="btn btn-primary" id="lab-run">▶ RUN SCENARIO</button>
+          <button class="btn btn-primary btn-ico" id="lab-run">${icon('play', { size: 15 })}<span>RUN SCENARIO</span></button>
           <button class="btn btn-ghost" id="lab-apply-live">APPLY TO LIVE SIM</button>
         </div>
         <p style="font-size:10.5px;color:var(--text-dim);line-height:1.5">Experiments run headless on a separate engine instance with a fixed random seed — change one variable at a time for a controlled comparison. The live simulation is not affected.</p>
@@ -169,13 +170,13 @@ export class Pages {
     form.querySelector('#lab-run').addEventListener('click', async () => {
       const btn = form.querySelector('#lab-run');
       const prog = form.querySelector('#lab-progress');
-      btn.disabled = true; btn.textContent = 'RUNNING…'; prog.style.display = 'block';
+      btn.disabled = true; btn.innerHTML = `<span>RUNNING…</span>`; prog.style.display = 'block';
       try {
         await this.lab.run(readCfg(), p => { prog.firstElementChild.style.width = `${Math.round(p * 100)}%`; });
         this.ui.toast('Experiment complete');
         this._renderResults();
       } finally {
-        btn.disabled = false; btn.textContent = '▶ RUN SCENARIO'; prog.style.display = 'none';
+        btn.disabled = false; btn.innerHTML = `${icon('play', { size: 15 })}<span>RUN SCENARIO</span>`; prog.style.display = 'none';
         form.querySelector('#lab-label').value = '';
         form.querySelector('#lab-label').placeholder = `Scenario ${String.fromCharCode(65 + this.lab.results.length)}`;
       }
@@ -207,7 +208,7 @@ export class Pages {
     const grid = this.ui.el('div', 'lab-grid');
     rs.forEach((r, i) => {
       const el = this.ui.el('div', 'lab-result', `
-        <h4>${r.label} <span class="del" data-i="${i}" title="Remove">✕</span></h4>
+        <h4>${r.label} <span class="del" data-i="${i}" title="Remove">${icon('close', { size: 13 })}</span></h4>
         <div class="lab-metrics">
           <span class="k">Avg Speed</span><span class="v">${r.avgSpeed} km/h</span>
           <span class="k">Density</span><span class="v">${r.density}%</span>
@@ -288,8 +289,8 @@ export class Pages {
       <p style="font-size:12px;color:var(--text-dim);margin-bottom:12px">
         <span id="an-rows">0</span> samples recorded (1 per simulated second) · scenario: <b id="an-scn"></b> · map: <b id="an-map"></b></p>
       <div class="btn-row">
-        <button class="btn btn-primary" id="an-export">⬇ EXPORT CSV</button>
-        <button class="btn btn-ghost" id="an-snapshot">📋 SNAPSHOT</button>
+        <button class="btn btn-primary btn-ico" id="an-export">${icon('download', { size: 15 })}<span>EXPORT CSV</span></button>
+        <button class="btn btn-ghost btn-ico" id="an-snapshot">${icon('clipboard', { size: 15 })}<span>SNAPSHOT</span></button>
       </div>`);
     foot.querySelector('#an-export').addEventListener('click', () => { this.engine.recorder.download(); this.ui.toast('CSV exported'); });
     foot.querySelector('#an-snapshot').addEventListener('click', () => { this.close(); this.ui.showResults(); });
