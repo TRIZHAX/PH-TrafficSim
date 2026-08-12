@@ -23,10 +23,13 @@ export class DataRecorder {
     const s = e.stats.snapshot;
     const cond = e.scenarios ? e.scenarios.conditions() : {};
     const lightState = e.lights.snapshot()[0];
+<<<<<<< HEAD
     // Existing study columns (unchanged), then appended driving-analytics columns
     // (brief §15). Driving fields are all-zero/inactive when no player is driving,
     // so every row keeps a consistent, non-breaking schema.
     const driving = e.driving ? e.driving.csvFields() : {};
+=======
+>>>>>>> 537061ed35c7d92f7bb486f3a7ec519bfed51bb6
     this.rows.push({
       timestamp: +e.clock.simTime.toFixed(1),
       vehicle_count: s.vehicles,
@@ -41,8 +44,12 @@ export class DataRecorder {
       traffic_light_state: lightState ? `P0:${lightState.phase0}|P1:${lightState.phase1}` : 'none',
       congestion: s.congestion.id,
       scenario: cond.scenario || '',
+<<<<<<< HEAD
       map: cond.map || '',
       ...driving
+=======
+      map: cond.map || ''
+>>>>>>> 537061ed35c7d92f7bb486f3a7ec519bfed51bb6
     });
     // keep memory bounded on very long runs
     if (this.rows.length > 14400) this.rows.splice(0, this.rows.length - 14400);

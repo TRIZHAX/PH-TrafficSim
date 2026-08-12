@@ -277,12 +277,15 @@ export class Pages {
     }
     inner.appendChild(grid);
 
+<<<<<<< HEAD
     // Driver analytics (brief §15) — live session metrics from the DrivingMonitor.
     const drive = this.ui.el('div', 'card glass');
     drive.id = 'an-drive-card';
     inner.appendChild(drive);
     this._renderDriveAnalytics(drive);
 
+=======
+>>>>>>> 537061ed35c7d92f7bb486f3a7ec519bfed51bb6
     const foot = this.ui.el('div', 'card glass', `
       <h3>Data Export</h3>
       <p style="font-size:12px;color:var(--text-dim);margin-bottom:12px">
@@ -323,6 +326,7 @@ export class Pages {
       document.getElementById('an-scn').textContent = cond.scenario;
       document.getElementById('an-map').textContent = cond.map;
     }
+<<<<<<< HEAD
     const dc = document.getElementById('an-drive-card');
     if (dc) this._renderDriveAnalytics(dc);
   }
@@ -393,6 +397,8 @@ export class Pages {
       <span class="num" ${color ? `style="color:${color}"` : ''}>${value}</span>
       <span class="lbl">${label}</span>
       ${sub ? `<span class="sub">${sub}</span>` : ''}</div>`;
+=======
+>>>>>>> 537061ed35c7d92f7bb486f3a7ec519bfed51bb6
   }
 
   /* ================= SETTINGS ================= */
