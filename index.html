@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#07090e" />
+  <meta name="description" content="PH TrafficSim — Philippine Traffic Flow Simulation & Analysis. A computational science traffic laboratory set in San Miguel, Bulacan. Designed & Created by TRIZHAX." />
+  <title>PH TrafficSim — Philippine Traffic Flow Simulation & Analysis</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2307090e'/><circle cx='50' cy='28' r='11' fill='%23ff4d4d'/><circle cx='50' cy='52' r='11' fill='%23ffc14d'/><circle cx='50' cy='76' r='11' fill='%2338e07d'/></svg>" />
+</head>
+<body>
+  <div id="app">
+    <!-- Loading screen -->
+    <div id="loading-screen">
+      <div class="load-signal" aria-hidden="true">
+        <span class="ls-lamp ls-red"></span>
+        <span class="ls-lamp ls-amber"></span>
+        <span class="ls-lamp ls-green"></span>
+      </div>
+      <h1 class="load-title">PH&nbsp;TRAFFICSIM</h1>
+      <p class="load-sub">Philippine Traffic Flow Simulation &amp; Analysis</p>
+      <div class="load-bar"><div class="load-bar-fill" id="load-bar-fill"></div></div>
+      <p class="load-status" id="load-status">Initializing simulation engine…</p>
+      <p class="load-credit">Designed &amp; Created by TRIZHAX</p>
+    </div>
+  </div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
